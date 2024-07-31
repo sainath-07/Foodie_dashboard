@@ -1,10 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
+import {Routes,Route} from 'react-router-dom'
+import Navigationpage from './vendorDashboard/pages/navigationpage';
+
 
 const App=()=>{
   return(
     <>
-    root page.
+     <Routes>
+      <Route path='/' Component={Navigationpage} />
+    </Routes>
     </>
   )
 
