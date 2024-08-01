@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Api_url } from "../../utils/handleApis";
 
-const VendorRegister = () => {
+const VendorRegister = ({handleVendorLogin}) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errormessage, seterrormessage] = useState(false);
+  const [emptyfields, setemptyfields] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,17 +20,32 @@ const VendorRegister = () => {
       });
 
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
-        console.log(data);
+        alert("registered successfully ");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        seterrormessage(false);
+        setemptyfields(false);
+        handleVendorLogin()
+      } else if (
+        username.length === 0 ||
+        email.length === 0 ||
+        password.length === 0
+      ) {
+        setemptyfields(true);
+      } else {
+        seterrormessage(true);
       }
     } catch (error) {
       console.error(error, "registration failed");
     }
   };
 
-  return ( 
+  return (
     <div
-      className=" rounded w-[50%] ml-52 h-[350px] mt-16"
+      className=" rounded w-[50%] ml-52 h-[380px] mt-16"
       style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
     >
       <form
@@ -61,6 +78,11 @@ const VendorRegister = () => {
           placeholder="enter you email"
           className="ml-2 text-lg pl-2 border-2 border-stone-800 rounded"
         />
+        {errormessage && (
+          <p className="text-red-600 font-semibold">
+            An account already exists with this email address in the database{" "}
+          </p>
+        )}
         <br />
         <label htmlFor="password" className=" w-72  font-semibold text-lg">
           Password
@@ -74,6 +96,12 @@ const VendorRegister = () => {
           placeholder="enter you password"
           className="ml-2 text-lg pl-2 border-2 border-stone-800 rounded"
         />
+        {emptyfields && (
+          <p className="text-red-600 font-semibold">
+            Fields must not be emptyfields
+          </p>
+        )}
+
         <button
           type="submit"
           className="bg-black text-white m-6 px-3 py-1 rounded"

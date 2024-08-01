@@ -5,12 +5,14 @@ import VendorRegister from "../components/form/VendorRegister";
 import VendorLogin from "../components/form/VendorLogin";
 import AddProducts from "../components/form/AddProducts";
 import AddFirm from "../components/form/AddFirm";
+import Welcompage from "../components/Welcompage";
 
 let initialvalue = {
   showVendorRegister: false,
   showVendorLogin: false,
   showAddFirm: false,
   showAddProducts: false,
+  showWelcomepage: false,
 };
 const reducerfun = (state, action) => {
   switch (action.type) {
@@ -46,11 +48,21 @@ const reducerfun = (state, action) => {
         showVendorRegister: false,
         showAddProducts: false,
       };
+    case 'WelcomePage':
+      return {   ...state,
+        showAddFirm: false,
+        showVendorLogin: false,
+        showVendorRegister: false,
+        showAddProducts: false,
+        showWelcomepage: true} ;
+      default : return state
   }
 };
 const Navigationpage = () => {
   const [currentstate, dispatchfun] = useReducer(reducerfun, initialvalue);
 
+
+  // handlers...
   const handleVendorRegister = () => {
     dispatchfun({
       type: "VendorRegister",
@@ -73,6 +85,11 @@ const Navigationpage = () => {
         type : "AddFirm"
     })
   }
+  const handleWelcomepage=()=>{
+    dispatchfun({
+      type : "WelcomePage"
+    })
+  }
   return (
     <div>
       <Navbar
@@ -85,10 +102,11 @@ const Navigationpage = () => {
         handleAddProducts={handleAddProducts}
         />
 
-        {currentstate.showVendorRegister && <VendorRegister />}
-        {currentstate.showVendorLogin && <VendorLogin />}
+        {currentstate.showVendorRegister && <VendorRegister handleVendorLogin={handleVendorLogin} />}
+        {currentstate.showVendorLogin && <VendorLogin handleWelcomepage={handleWelcomepage} />}
         {currentstate.showAddProducts && <AddProducts />}
         {currentstate.showAddFirm && <AddFirm />}
+        {currentstate.showWelcomepage && <Welcompage />}
      
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Navbar = ({handleVendorRegister,handleVendorLogin}) => {
-  console.log(handleVendorLogin)
   return (
     <div className='bg-red-500 h-14 items-center  flex justify-between'>
       <div className='ml-8 text-xl font-semibold'>
