@@ -5,7 +5,7 @@ const VendorLogin = ({ handleWelcomepage }) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
     try {
       const response = await fetch(`${Api_url}/vendor/login`, {
@@ -22,12 +22,25 @@ const VendorLogin = ({ handleWelcomepage }) => {
         setemail("");
         setpassword("");
         handleWelcomepage();
-      } else {
+      } 
+      else {
         alert("some thing went wrong....");
       }
+      const vendorId=data.vendorId
+      const vendorResponse = await fetch(`${Api_url}/vendor/singleVendorbyid/${vendorId}`)
+      const vendorData= await vendorResponse.json()
+      console.log(vendorData,'vendorData')
+      if(vendorResponse.ok){
+        const vendorFirmId= vendorData.vendorFirmId
+        localStorage.setItem('firmId',vendorFirmId)
+      }
+
+
     } catch (error) {
       console.log(error, "error message");
     }
+
+   
   };
   return (
     <div

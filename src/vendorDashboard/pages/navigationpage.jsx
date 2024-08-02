@@ -6,6 +6,7 @@ import VendorLogin from "../components/form/VendorLogin";
 import AddProducts from "../components/form/AddProducts";
 import AddFirm from "../components/form/AddFirm";
 import Welcompage from "../components/Welcompage";
+import AllProducts from "../components/AllProducts";
 
 let initialvalue = {
   showVendorRegister: false,
@@ -13,6 +14,7 @@ let initialvalue = {
   showAddFirm: false,
   showAddProducts: false,
   showWelcomepage: false,
+  showAllProducts: false,
 };
 const reducerfun = (state, action) => {
   switch (action.type) {
@@ -21,16 +23,20 @@ const reducerfun = (state, action) => {
         ...state,
         showAddFirm: false,
         showVendorLogin: false,
+        showWelcomepage: false,
         showVendorRegister: true,
         showAddProducts: false,
+        showAllProducts: false,
       };
     case "VendorLogin":
       return {
         ...state,
         showAddFirm: false,
         showVendorLogin: true,
+        showWelcomepage: false,
         showVendorRegister: false,
         showAddProducts: false,
+        showAllProducts: false,
       };
     case "AddProducts":
       return {
@@ -38,7 +44,9 @@ const reducerfun = (state, action) => {
         showAddFirm: false,
         showVendorLogin: false,
         showVendorRegister: false,
+        showWelcomepage: false,
         showAddProducts: true,
+        showAllProducts: false,
       };
     case "AddFirm":
       return {
@@ -47,20 +55,35 @@ const reducerfun = (state, action) => {
         showVendorLogin: false,
         showVendorRegister: false,
         showAddProducts: false,
+        showWelcomepage: false,
+        showAllProducts: false,
       };
-    case 'WelcomePage':
-      return {   ...state,
+    case "WelcomePage":
+      return {
+        ...state,
         showAddFirm: false,
         showVendorLogin: false,
         showVendorRegister: false,
         showAddProducts: false,
-        showWelcomepage: true} ;
-      default : return state
+        showAllProducts: false,
+        showWelcomepage: true,
+      };
+    case "AllProducts":
+      return {
+        ...state,
+        showAddFirm: false,
+        showVendorLogin: false,
+        showVendorRegister: false,
+        showAddProducts: false,
+        showWelcomepage: false,
+        showAllProducts: true,
+      };
+    default:
+      return state;
   }
 };
 const Navigationpage = () => {
   const [currentstate, dispatchfun] = useReducer(reducerfun, initialvalue);
-
 
   // handlers...
   const handleVendorRegister = () => {
@@ -74,22 +97,26 @@ const Navigationpage = () => {
     });
   };
 
-  const handleAddProducts=()=>{
+  const handleAddProducts = () => {
     dispatchfun({
-        type : "AddProducts"
-    })
-
-  }
-  const handleAddFirm=()=>{
+      type: "AddProducts",
+    });
+  };
+  const handleAddFirm = () => {
     dispatchfun({
-        type : "AddFirm"
-    })
-  }
-  const handleWelcomepage=()=>{
+      type: "AddFirm",
+    });
+  };
+  const handleWelcomepage = () => {
     dispatchfun({
-      type : "WelcomePage"
-    })
-  }
+      type: "WelcomePage",
+    });
+  };
+  const handleAllProducts = () => {
+    dispatchfun({
+      type: "AllProducts",
+    });
+  };
   return (
     <div>
       <Navbar
@@ -98,16 +125,22 @@ const Navigationpage = () => {
       />
 
       <div className="flex">
-        <Sidebar handleAddFirm={handleAddFirm} 
-        handleAddProducts={handleAddProducts}
+        <Sidebar
+          handleAddFirm={handleAddFirm}
+          handleAddProducts={handleAddProducts}
+          handleAllProducts={handleAllProducts}
         />
 
-        {currentstate.showVendorRegister && <VendorRegister handleVendorLogin={handleVendorLogin} />}
-        {currentstate.showVendorLogin && <VendorLogin handleWelcomepage={handleWelcomepage} />}
+        {currentstate.showVendorRegister && (
+          <VendorRegister handleVendorLogin={handleVendorLogin} />
+        )}
+        {currentstate.showVendorLogin && (
+          <VendorLogin handleWelcomepage={handleWelcomepage} />
+        )}
         {currentstate.showAddProducts && <AddProducts />}
         {currentstate.showAddFirm && <AddFirm />}
         {currentstate.showWelcomepage && <Welcompage />}
-     
+        {currentstate.showAllProducts && <AllProducts />}
       </div>
     </div>
   );
