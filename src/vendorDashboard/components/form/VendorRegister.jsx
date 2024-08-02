@@ -17,7 +17,10 @@ const VendorRegister = ({handleVendorLogin}) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, email, password }),
+
       });
+      localStorage.setItem('username',username)
+
 
       const data = await response.json();
       console.log(data);

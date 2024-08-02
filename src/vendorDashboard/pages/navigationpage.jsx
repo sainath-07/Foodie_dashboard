@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import VendorRegister from "../components/form/VendorRegister";
@@ -84,6 +84,24 @@ const reducerfun = (state, action) => {
 };
 const Navigationpage = () => {
   const [currentstate, dispatchfun] = useReducer(reducerfun, initialvalue);
+  const [showLogout, setshowLogout] = useState(false);
+  const [showFirmTitle, setshowFirmTitle] = useState(true);
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("loginToken");
+    if (getToken) {
+      setshowLogout(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const vendorFirmName = localStorage.getItem("vendorFirmName");
+    if (vendorFirmName) {
+      setshowFirmTitle(false);
+    }
+  }, []);
+
+
 
   // handlers...
   const handleVendorRegister = () => {
@@ -117,11 +135,21 @@ const Navigationpage = () => {
       type: "AllProducts",
     });
   };
+
+  const handleLogout = () => {
+    window.confirm("Are you sure do you want to logout..?");
+    localStorage.clear();
+    setshowLogout(false);
+    setshowFirmTitle(true);
+  };
+
   return (
     <div>
       <Navbar
         handleVendorRegister={handleVendorRegister}
         handleVendorLogin={handleVendorLogin}
+        handleLogout={handleLogout}
+        showLogout={showLogout}
       />
 
       <div className="flex">
@@ -129,6 +157,7 @@ const Navigationpage = () => {
           handleAddFirm={handleAddFirm}
           handleAddProducts={handleAddProducts}
           handleAllProducts={handleAllProducts}
+          showFirmTitle={showFirmTitle}
         />
 
         {currentstate.showVendorRegister && (

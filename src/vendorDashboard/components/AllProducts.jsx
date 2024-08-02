@@ -51,18 +51,18 @@ const AllProducts = () => {
   return (
     <>
       <div>
-        {products.length === 0 ? (
+        {products.length==""? (
           <div>No products in the cart</div>
         ) : (
           <>
-            <table className=" border-2 border-collapse border-slate-400 w-[70vw] mt-8 ml-24">
+            <table className=" border-2 border-collapse border-slate-600 w-[70vw] mt-8 ml-24">
               <thead>
                 <tr>
-                  <th className="border-2 border-slate-400">Product Id</th>
-                  <th className="border-2 border-slate-400">Product Name</th>
-                  <th className="border-2 border-slate-400">Price</th>
-                  <th className="border-2 border-slate-400">Image</th>
-                  <th className="border-2 border-slate-400">Delete</th>
+                  <th className="border-2 border-slate-600">Product Id</th>
+                  <th className="border-2 border-slate-600">Product Name</th>
+                  <th className="border-2 border-slate-600">Price</th>
+                  <th className="border-2 border-slate-600">Image</th>
+                  <th className="border-2 border-slate-600">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,14 +79,14 @@ const AllProducts = () => {
                   return (
                     <React.Fragment key={index}>
                       <tr className="w-28">
-                        <td className="border-2 border-slate-400 text-center">
+                        <td className="border-2 font-semibold border-slate-600 text-center">
                           {_id}
                         </td>
-                        <td className="border-2 border-slate-400 text-center">
+                        <td className="border-2 font-bold text-xl text-red-600 border-slate-600 text-center">
                           {productName}
                         </td>
-                        <td className="border-2 border-slate-400 text-center">
-                          {price}
+                        <td className="border-2 font-semibold border-slate-600 text-center">
+                        &#8377;{price}
                         </td>
                         <td className=" flex justify-center">
                           {image && (
@@ -97,7 +97,7 @@ const AllProducts = () => {
                             />
                           )}
                         </td>
-                        <td className="border-2 border-slate-400 text-center">
+                        <td className="border-2 border-slate-600 text-center">
                           <button
                             onClick={() =>
                               handleDeleteButton(ele._id, productName)

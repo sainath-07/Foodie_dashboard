@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Api_url } from "../../utils/handleApis";
 
 const VendorLogin = ({ handleWelcomepage }) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -31,8 +32,11 @@ const VendorLogin = ({ handleWelcomepage }) => {
       const vendorData= await vendorResponse.json()
       console.log(vendorData,'vendorData')
       if(vendorResponse.ok){
+        const vendorFirmName= vendorData.vendor.firm[0].firmName
         const vendorFirmId= vendorData.vendorFirmId
+        localStorage.setItem('vendorFirmName',vendorFirmName)
         localStorage.setItem('firmId',vendorFirmId)
+        window.location.reload()
       }
 
 
