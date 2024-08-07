@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Api_url } from "../../utils/handleApis";
 
-const VendorLogin = ({ handleWelcomepage }) => {
+const VendorLogin = ({ handleAddFirm,handleAddProducts }) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
@@ -25,28 +25,20 @@ const VendorLogin = ({ handleWelcomepage }) => {
       });
 
       const data = await response.json();
+      console.log(data, "data");
       if (response.ok) {
-        console.log(data, "data");
-        alert("login is successfull");
+        localStorage.setItem("firmId", data.vendor.firm);
+        // console.log(data, "data");
+        localStorage.setItem("vendorId", data.vendor._id);
         localStorage.setItem("loginToken", data.token);
+        alert("login is successfull");
         setemail("");
         setpassword("");
-        handleWelcomepage();
-      } else {
-        alert("some thing went wrong....");
-      }
-      const vendorId = data.vendorId;
-      const vendorResponse = await fetch(
-        `${Api_url}/vendor/singleVendorbyid/${vendorId}`
-      );
-      const vendorData = await vendorResponse.json();
-      console.log(vendorData, "vendorData");
-      if (vendorResponse.ok) {
-        const vendorFirmName = vendorData.vendor.firm[0].firmName;
-        const vendorFirmId = vendorData.vendorFirmId;
-        localStorage.setItem("vendorFirmName", vendorFirmName);
-        localStorage.setItem("firmId", vendorFirmId);
+     
         window.location.reload();
+
+      } else if(data.error) {
+        alert(data.error);
       }
     } catch (error) {
       console.log(error, "error message");
@@ -79,7 +71,7 @@ const VendorLogin = ({ handleWelcomepage }) => {
             fontStyle: "normal",
           }}
         >
-          Email
+          Email <span className="text-red-600">*</span>
         </label>
         <input
           type="text"
@@ -100,7 +92,7 @@ const VendorLogin = ({ handleWelcomepage }) => {
             fontStyle: "normal",
           }}
         >
-          Password
+          Password <span className="text-red-600">*</span>
         </label>
         <input
           type="password"

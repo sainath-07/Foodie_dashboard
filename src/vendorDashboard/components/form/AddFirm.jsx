@@ -64,6 +64,7 @@ const AddFirm = () => {
       const data = await response.json();
       if (response.ok) {
         console.log(data, "data");
+        localStorage.setItem("firmId", data.firm._id);
         alert("firm added successfully");
         setfirmName("");
         setarea("");
@@ -71,10 +72,14 @@ const AddFirm = () => {
         setcategory([]);
         setregion([]);
         setimage(null);
-        const firmId = data.firmId;
-        localStorage.setItem("firmId", firmId);
       } else if (data.message == "vendor can have only one firm") {
-        alert("firm exists , One vendor can add only one firm");
+        alert("vendor can Add only ONE firm (resturant)");
+        setfirmName("");
+        setarea("");
+        setoffer("");
+        setcategory([]);
+        setregion([]);
+        setimage(null);
       } else {
         alert("something wentWrong , could not add firm try again...");
       }
@@ -169,7 +174,9 @@ const AddFirm = () => {
         </label>
         <div className="flex justify-center gap-8">
           <div>
-            <label htmlFor="veg" style={poppins}>veg</label>
+            <label htmlFor="veg" style={poppins}>
+              veg
+            </label>
             <input
               type="checkbox"
               id="veg"
@@ -180,7 +187,9 @@ const AddFirm = () => {
             />
           </div>
           <div>
-            <label htmlFor="Non-veg" style={poppins}>Non-veg</label>
+            <label htmlFor="Non-veg" style={poppins}>
+              Non-veg
+            </label>
             <input
               type="checkbox"
               id="Non-veg"
@@ -206,7 +215,9 @@ const AddFirm = () => {
 
         <div className="flex justify-center gap-3">
           <div>
-            <label htmlFor="South-Indian" style={poppins}>South-Indian</label>
+            <label htmlFor="South-Indian" style={poppins}>
+              South-Indian
+            </label>
             <input
               type="checkbox"
               id="South-Indian"
@@ -217,7 +228,9 @@ const AddFirm = () => {
             />
           </div>
           <div>
-            <label htmlFor="North-Indian" style={poppins}>North-Indian</label>
+            <label htmlFor="North-Indian" style={poppins}>
+              North-Indian
+            </label>
             <input
               type="checkbox"
               id="North-Indian"
@@ -228,7 +241,9 @@ const AddFirm = () => {
             />
           </div>
           <div>
-            <label htmlFor="chinese" style={poppins}>chinese</label>
+            <label htmlFor="chinese" style={poppins}>
+              chinese
+            </label>
             <input
               type="checkbox"
               id="chinese"
@@ -239,7 +254,9 @@ const AddFirm = () => {
             />
           </div>
           <div>
-            <label htmlFor="bakery" style={poppins}>bakery</label>
+            <label htmlFor="bakery" style={poppins}>
+              bakery
+            </label>
             <input
               type="checkbox"
               id="bakery"
@@ -261,17 +278,17 @@ const AddFirm = () => {
           }}
         >
           Offer :
-        <input
-          type="text"
-          id="offer"
-          value={offer}
-          onChange={(e) => setoffer(e.target.value)}
-          name="offer"
-         className="border-2 ml-4 border-gray-300 p-2 w-[70%] rounded text-xl pl-2
+          <input
+            type="text"
+            id="offer"
+            value={offer}
+            onChange={(e) => setoffer(e.target.value)}
+            name="offer"
+            className="border-2 ml-4 border-gray-300 p-2 w-[70%] rounded text-xl pl-2
          "
-         placeholder="15% offer "
-         autoComplete="off"
-        />
+            placeholder="15% offer "
+            autoComplete="off"
+          />
         </label>
 
         <div className="mt-3">

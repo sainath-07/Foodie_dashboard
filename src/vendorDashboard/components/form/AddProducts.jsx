@@ -35,7 +35,8 @@ const AddProducts = () => {
       const loginToken = localStorage.getItem("loginToken");
 
       if (!firmId || !loginToken) {
-        console.log("User is not authenticated");
+        alert("User is not authenticated");
+        return
       }
 
       const formData = new FormData();

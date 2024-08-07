@@ -5,12 +5,16 @@ const Sidebar = ({
   handleAddFirm,
   handleAllProducts,
   showFirmTitle,
+  handleUserDetails,
 }) => {
+  // const firmId = localStorage.getItem("firmId");
+
   let poppins = {
     fontFamily: "Poppins, sans-serif",
     fontWeight: 400,
     fontStyle: "italic",
   };
+
   return (
     <div className="w-[15%] bg-gray-300 max-h-[631px] h-screen flex justify-center">
       <ul className="flex flex-col gap-8 font-semibold text-lg mt-8">
@@ -39,7 +43,13 @@ const Sidebar = ({
         >
           All Products
         </li>
-        <li style={poppins}>User details</li>
+        <li
+          className="cursor-pointer"
+          style={poppins}
+          onClick={handleUserDetails}
+        >
+          User details
+        </li>
       </ul>
     </div>
   );

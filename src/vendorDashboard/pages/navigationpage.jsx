@@ -5,16 +5,21 @@ import VendorRegister from "../components/form/VendorRegister";
 import VendorLogin from "../components/form/VendorLogin";
 import AddProducts from "../components/form/AddProducts";
 import AddFirm from "../components/form/AddFirm";
-import Welcompage from "../components/Welcompage";
 import AllProducts from "../components/AllProducts";
+import foodimage from "./foodimage.jpg";
+import UserDetails from "../components/UserDetails";
+
+const loginToken = localStorage.getItem("loginToken");
+const firmId = localStorage.getItem("firmId");
+// console.log(firmId,'firmId')
 
 let initialvalue = {
   showVendorRegister: false,
   showVendorLogin: false,
   showAddFirm: false,
   showAddProducts: false,
-  showWelcomepage: false,
   showAllProducts: false,
+  showUserDetails: false,
 };
 const reducerfun = (state, action) => {
   switch (action.type) {
@@ -23,96 +28,85 @@ const reducerfun = (state, action) => {
         ...state,
         showAddFirm: false,
         showVendorLogin: false,
-        showWelcomepage: false,
         showVendorRegister: true,
         showAddProducts: false,
         showAllProducts: false,
+        showUserDetails: false,
       };
     case "VendorLogin":
       return {
         ...state,
         showAddFirm: false,
         showVendorLogin: true,
-        showWelcomepage: false,
         showVendorRegister: false,
         showAddProducts: false,
         showAllProducts: false,
+        showUserDetails: false,
       };
     case "AddProducts":
-      return {
-        ...state,
-        showAddFirm: false,
-        showVendorLogin: false,
-        showVendorRegister: false,
-        showWelcomepage: false,
-        showAddProducts: true,
-        showAllProducts: false,
-      };
+      if (loginToken || firmId) {
+        return {
+          ...state,
+          showAddFirm: false,
+          showVendorLogin: false,
+          showVendorRegister: false,
+          showAddProducts: true,
+          showAllProducts: false,
+          showUserDetails: false,
+        };
+      } else {
+        return state;
+      }
     case "AddFirm":
-      return {
-        ...state,
-        showAddFirm: true,
-        showVendorLogin: false,
-        showVendorRegister: false,
-        showAddProducts: false,
-        showWelcomepage: false,
-        showAllProducts: false,
-      };
-    case "WelcomePage":
-      return {
-        ...state,
-        showAddFirm: false,
-        showVendorLogin: false,
-        showVendorRegister: false,
-        showAddProducts: false,
-        showAllProducts: false,
-        showWelcomepage: true,
-      };
+      if (loginToken) {
+        return {
+          ...state,
+          showAddFirm: true,
+          showVendorLogin: false,
+          showVendorRegister: false,
+          showAddProducts: false,
+          showAllProducts: false,
+          showUserDetails: false,
+        };
+      } else {
+        return state;
+      }
+
     case "AllProducts":
-      return {
-        ...state,
-        showAddFirm: false,
-        showVendorLogin: false,
-        showVendorRegister: false,
-        showAddProducts: false,
-        showWelcomepage: false,
-        showAllProducts: true,
-      };
+      if (loginToken) {
+        return {
+          ...state,
+          showAddFirm: false,
+          showVendorLogin: false,
+          showVendorRegister: false,
+          showAddProducts: false,
+          showAllProducts: true,
+          showUserDetails: false,
+        };
+      } else {
+        return state;
+      }
+    case "userDetails":
+      if (loginToken && firmId) {
+        return {
+          ...state,
+          showAddFirm: false,
+          showVendorLogin: false,
+          showVendorRegister: false,
+          showAddProducts: false,
+          showAllProducts: false,
+          showUserDetails: true,
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
 };
 const Navigationpage = () => {
   const [currentstate, dispatchfun] = useReducer(reducerfun, initialvalue);
-  const [showLogout, setshowLogout] = useState(false);
   const [showFirmTitle, setshowFirmTitle] = useState(true);
-
-  const { showVendorRegister,
-    showVendorLogin,
-    showAddFirm,
-    showAddProducts,
-    showWelcomepage,
-    showAllProducts,}=currentstate
-
-   
-
-  
-
-
-
-  useEffect(() => {
-    const getLoginToken = localStorage.getItem("loginToken");
-    if (getLoginToken) {
-      setshowLogout(true);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    window.confirm("Are you sure do you want to logout..?"); 
-    localStorage.clear();
-    setshowLogout(false);
-    setshowFirmTitle(true);
-  };
 
   useEffect(() => {
     const vendorFirmName = localStorage.getItem("vendorFirmName");
@@ -121,6 +115,21 @@ const Navigationpage = () => {
     }
   }, []);
 
+  const {
+    showVendorRegister,
+    showVendorLogin,
+    showAddFirm,
+    showAddProducts,
+    showAllProducts,
+    showUserDetails,
+  } = currentstate;
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure do you want to logout..?")) {
+      localStorage.clear();
+      window.location.reload();
+    }
+  };
   // handlers...
   const handleVendorRegister = () => {
     dispatchfun({
@@ -133,19 +142,18 @@ const Navigationpage = () => {
     });
   };
 
-  const handleAddProducts = () => {
-    dispatchfun({
-      type: "AddProducts",
-    });
-  };
+  if (showVendorLogin || showVendorRegister) {
+    localStorage.clear();
+  }
+
   const handleAddFirm = () => {
     dispatchfun({
       type: "AddFirm",
     });
   };
-  const handleWelcomepage = () => {
+  const handleAddProducts = () => {
     dispatchfun({
-      type: "WelcomePage",
+      type: "AddProducts",
     });
   };
   const handleAllProducts = () => {
@@ -153,9 +161,17 @@ const Navigationpage = () => {
       type: "AllProducts",
     });
   };
+  const handleUserDetails = () => {
+    dispatchfun({
+      type: "userDetails",
+    });
+  };
 
- 
- 
+  let Poppins = {
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: 500,
+    fontStyle: "normal",
+  };
 
   return (
     <div>
@@ -163,7 +179,6 @@ const Navigationpage = () => {
         handleVendorRegister={handleVendorRegister}
         handleVendorLogin={handleVendorLogin}
         handleLogout={handleLogout}
-        showLogout={showLogout}
       />
 
       <div className="flex">
@@ -171,19 +186,45 @@ const Navigationpage = () => {
           handleAddFirm={handleAddFirm}
           handleAddProducts={handleAddProducts}
           handleAllProducts={handleAllProducts}
+          handleUserDetails={handleUserDetails}
           showFirmTitle={showFirmTitle}
+          showVendorRegister={showVendorRegister}
+          showVendorLogin={showVendorLogin}
         />
 
-        {currentstate.showVendorRegister && (
+        {showVendorRegister && (
           <VendorRegister handleVendorLogin={handleVendorLogin} />
         )}
-        {currentstate.showVendorLogin && (
-          <VendorLogin handleWelcomepage={handleWelcomepage} />
+
+        {showVendorLogin && (
+          <VendorLogin
+            handleAddFirm={handleAddFirm}
+            handleAddProducts={handleAddProducts}
+          />
         )}
-        {currentstate.showAddProducts  &&  <AddProducts />}
-        {currentstate.showAddFirm &&  <AddFirm />}
-        {currentstate.showWelcomepage &&   <Welcompage />}
-        {currentstate.showAllProducts && <AllProducts />}
+
+        {showAddFirm && loginToken && <AddFirm />}
+        {showAddProducts && loginToken && <AddProducts />}
+        {showAllProducts && loginToken && <AllProducts />}
+        {showUserDetails && loginToken && <UserDetails />}
+
+        {showVendorLogin ||
+        showVendorRegister ||
+        showAddFirm ||
+        showAddProducts ||
+        showUserDetails ||
+        showAllProducts ? (
+          ""
+        ) : (
+          <>
+            <div className="flex gap-3 justify-center ml-20 items-center mx-auto w-[75%]">
+              <img src={foodimage} className="w-[50%] rounded" alt="" />
+              <span className="text-xl" style={Poppins}>
+                Welcome to vendor Dashboard
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

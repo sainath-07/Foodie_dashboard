@@ -11,6 +11,11 @@ const VendorRegister = ({ handleVendorLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      if(username==""|| username==false || email=="" || email==false || password=="" || password==false){
+         alert('Please fill all the fields to register successfully')
+         return
+      }
       const response = await fetch(`${Api_url}/vendor/register`, {
         method: "POST",
         headers: {
@@ -18,7 +23,7 @@ const VendorRegister = ({ handleVendorLogin }) => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-      localStorage.setItem("username", username);
+      // localStorage.setItem("username", username);
 
       const data = await response.json();
       console.log(data);
@@ -71,7 +76,7 @@ const VendorRegister = ({ handleVendorLogin }) => {
             fontStyle: "normal",
           }}
         >
-          Username
+          Username <span className="text-red-600">*</span>
         </label>
         <input
           type="text"
@@ -98,7 +103,7 @@ const VendorRegister = ({ handleVendorLogin }) => {
             fontStyle: "normal",
           }}
         >
-          Email
+          Email  <span className="text-red-600">*</span>
         </label>
         <input
           type="text"
@@ -129,8 +134,8 @@ const VendorRegister = ({ handleVendorLogin }) => {
             fontWeight: 500,
             fontStyle: "normal",
           }}
-        >
-          Password
+        > 
+          Password  <span className="text-red-600">*</span>
         </label>
         <input
           type="password"
