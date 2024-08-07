@@ -4,8 +4,14 @@ import { Api_url } from "../utils/handleApis";
 const AllProducts = () => {
   const [products, setproducts] = useState([]);
 
-  const fetchApi = async () => {
+  useEffect(() => {
+    fetchApi(setproducts);
+  }, []);
+
+  // AllProducts logic
+  const fetchApi = async (setproducts) => {
     const getfirmId = localStorage.getItem("firmId");
+    // console.log(getfirmId, "getfirmId");
 
     try {
       const response = await fetch(`${Api_url}/product/${getfirmId}`);
@@ -18,51 +24,59 @@ const AllProducts = () => {
     }
   };
 
-  useEffect(() => {
-    fetchApi();
-  }, []);
-
-  const handleDeleteButton = async (productID, productName) => {
-
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${productName}?`);
-    if (!confirmDelete) return;
-
+  // DeleteProducts logic
+  const handleDeleteButton = async (productID, setproducts) => {
     try {
+      console.log(productID, "productID");
       const response = await fetch(`${Api_url}/product/${productID}`, {
         method: "DELETE",
       });
-      console.log(response, "response");
-      console.log('after response')
+
+      console.log(response.status, "Response Status");
+      const data = await response.text();
+      console.log(data, "Response Text");
+
       if (response.ok) {
-        const filteredProducts = products.filter((product) => product._id !== productID);
-        alert(`${productName} deleted successfully`);
-        setproducts(filteredProducts);
+        fetchApi(setproducts);
+        alert("Product deleted successfully");
       } else {
-        const errorData = await response.json();
-        console.error("Failed to delete product", errorData);
-        alert("Something went wrong, product is not deleted");
+        alert("product is not deleted successfully");
       }
     } catch (error) {
-      console.error("Failed to delete product");
-      alert("some thing went wrong product is not deleted");
+      console.log(error.message, "error message handleDeleteButton");
+      alert("Something went wrong: " + error.message);
     }
+  };
+
+  let Poppins = {
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: 400,
+    fontStyle: "normal",
   };
 
   return (
     <>
       <div>
-        {products.length==""? (
-          <div>No products in the cart</div>
-        ) : (
+        {Array.isArray(products) && products.length > 0 ? (
           <>
-            <table className=" border-2 border-collapse border-slate-600 w-[70vw] mt-8 ml-24">
+            <table className="border-r-2 border-l-2 border-b-2 border-collapse border-slate-600 w-[70vw] mt-8 ml-24">
               <thead>
-                <tr>
-                  <th className="border-2 border-slate-600">Product Id</th>
-                  <th className="border-2 border-slate-600">Product Name</th>
-                  <th className="border-2 border-slate-600">Price</th>
-                  <th className="border-2 border-slate-600">Image</th>
-                  <th className="border-2 border-slate-600">Delete</th>
+                <tr className="bg-black text-white text-xl">
+                  <th style={Poppins} className="p-3">
+                    Product Id
+                  </th>
+                  <th style={Poppins} className="p-3">
+                    Product Name
+                  </th>
+                  <th style={Poppins} className="p-3">
+                    Price
+                  </th>
+                  <th style={Poppins} className="p-3">
+                    Image
+                  </th>
+                  <th style={Poppins} className="p-3">
+                    Delete_Product
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -79,16 +93,37 @@ const AllProducts = () => {
                   return (
                     <React.Fragment key={index}>
                       <tr className="w-28">
-                        <td className="border-2 font-semibold border-slate-600 text-center">
+                        <td
+                          className="border-2 font-semibold border-slate-600 text-center text-base"
+                          style={{
+                            fontFamily: "Poppins, sans-serif",
+                            fontWeight: 600,
+                            fontStyle: "normal",
+                          }}
+                        >
                           {_id}
                         </td>
-                        <td className="border-2 font-bold text-xl text-red-600 border-slate-600 text-center">
+                        <td
+                          className="border-2 font-bold text-xl text-orange-500 border-slate-600 text-center"
+                          style={{
+                            fontFamily: "Poppins, sans-serif",
+                            fontWeight: 600,
+                            fontStyle: "normal",
+                          }}
+                        >
                           {productName}
                         </td>
-                        <td className="border-2 font-semibold border-slate-600 text-center">
-                        &#8377;{price}
+                        <td
+                          className="border-2 font-semibold border-slate-600 text-center text-xl"
+                          style={{
+                            fontFamily: "Poppins, sans-serif",
+                            fontWeight: 500,
+                            fontStyle: "normal",
+                          }}
+                        >
+                          &#8377;{price}
                         </td>
-                        <td className=" flex justify-center">
+                        <td className=" flex justify-center p-4">
                           {image && (
                             <img
                               src={`${Api_url}/uploads/${image}`}
@@ -99,10 +134,14 @@ const AllProducts = () => {
                         </td>
                         <td className="border-2 border-slate-600 text-center">
                           <button
-                            onClick={() =>
-                              handleDeleteButton(ele._id, productName)
-                            }
-                            className="bg-black p-1 rounded m-2 text-white "
+                            type="button"
+                            onClick={() => handleDeleteButton(_id, setproducts)}
+                            className=" p-2 rounded m-2 text-xl bg-red-500 text-white border-gray-300"
+                            style={{
+                              fontFamily: "Poppins, sans-serif",
+                              fontWeight: 400,
+                              fontStyle: "normal",
+                            }}
                           >
                             Delete
                           </button>
@@ -114,6 +153,14 @@ const AllProducts = () => {
               </tbody>
             </table>
           </>
+        ) : (
+          <div className="w-[80vw] h-[80vh] flex justify-center items-center text-2xl" style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 500,
+            fontStyle: "normal",
+          }}>
+            <p>No products,Please click on Add products </p>
+          </div>
         )}
       </div>
     </>

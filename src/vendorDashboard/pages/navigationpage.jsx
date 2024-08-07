@@ -87,12 +87,32 @@ const Navigationpage = () => {
   const [showLogout, setshowLogout] = useState(false);
   const [showFirmTitle, setshowFirmTitle] = useState(true);
 
+  const { showVendorRegister,
+    showVendorLogin,
+    showAddFirm,
+    showAddProducts,
+    showWelcomepage,
+    showAllProducts,}=currentstate
+
+   
+
+  
+
+
+
   useEffect(() => {
-    const getToken = localStorage.getItem("loginToken");
-    if (getToken) {
+    const getLoginToken = localStorage.getItem("loginToken");
+    if (getLoginToken) {
       setshowLogout(true);
     }
   }, []);
+
+  const handleLogout = () => {
+    window.confirm("Are you sure do you want to logout..?"); 
+    localStorage.clear();
+    setshowLogout(false);
+    setshowFirmTitle(true);
+  };
 
   useEffect(() => {
     const vendorFirmName = localStorage.getItem("vendorFirmName");
@@ -100,8 +120,6 @@ const Navigationpage = () => {
       setshowFirmTitle(false);
     }
   }, []);
-
-
 
   // handlers...
   const handleVendorRegister = () => {
@@ -136,12 +154,8 @@ const Navigationpage = () => {
     });
   };
 
-  const handleLogout = () => {
-    window.confirm("Are you sure do you want to logout..?");
-    localStorage.clear();
-    setshowLogout(false);
-    setshowFirmTitle(true);
-  };
+ 
+ 
 
   return (
     <div>
@@ -166,9 +180,9 @@ const Navigationpage = () => {
         {currentstate.showVendorLogin && (
           <VendorLogin handleWelcomepage={handleWelcomepage} />
         )}
-        {currentstate.showAddProducts && <AddProducts />}
-        {currentstate.showAddFirm && <AddFirm />}
-        {currentstate.showWelcomepage && <Welcompage />}
+        {currentstate.showAddProducts  &&  <AddProducts />}
+        {currentstate.showAddFirm &&  <AddFirm />}
+        {currentstate.showWelcomepage &&   <Welcompage />}
         {currentstate.showAllProducts && <AllProducts />}
       </div>
     </div>

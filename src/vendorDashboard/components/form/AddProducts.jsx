@@ -69,41 +69,81 @@ const AddProducts = () => {
     }
   };
 
+  let poppins = {
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: 500,
+    fontStyle: "normal",
+  };
   return (
     <div
-      className="mt-8 mx-auto w-[550px] px-8 h-[550px]"
+      className="mt-4 mx-auto w-[600px] flex justify-center px-8 h-[600px] border-2 border-gray-300 rounded"
       style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
     >
       <form className="flex flex-col gap-2" onSubmit={handleAddProducts}>
-        <h2 className="text-2xl font-bold text-center">Add Product</h2>
+        <h2 className="text-2xl font-bold text-center mt-2" style={poppins}>
+          Add Product
+        </h2>
 
-        <label htmlFor="productName" className="font-semibold">
+        <label
+          htmlFor="productName"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
+        >
           ProductName
         </label>
         <input
           type="text"
           value={productName}
           onChange={(e) => setproductName(e.target.value)}
-          className="border-2 border-gray-300 w-[70%] rounded text-xl pl-2"
+          className="border-2 border-gray-300  rounded text-lg pl-2 p-2 "
+          autoComplete="off"
           id="productName"
           name="productName"
           placeholder="ProductName"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
         />
 
-        <label htmlFor="price" className="font-semibold">
+        <label
+          htmlFor="price"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
+        >
           Price
         </label>
         <input
-          type="text"
+          type="number"
           id="price"
           value={price}
-          className="border-2 border-gray-300 w-[70%] rounded text-xl pl-2"
+          className="border-2 border-gray-300 w-[70%] rounded text-lg pl-2 p-2 "
+          autoComplete="off"
           onChange={(e) => setPrice(e.target.value)}
           name="price"
           placeholder="Enter price"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
         />
 
-        <label htmlFor="category" className="font-semibold">
+        <label
+          htmlFor="category"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
+        >
           Category
         </label>
         <div className="flex gap-2 justify-center items-center">
@@ -131,7 +171,14 @@ const AddProducts = () => {
           </div>
         </div>
 
-        <label htmlFor="bestSeller" className="font-semibold">
+        <label
+          htmlFor="bestSeller"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
+        >
           BestSeller
         </label>
 
@@ -162,31 +209,46 @@ const AddProducts = () => {
           </div>
         </div>
 
-        <label htmlFor="description" className="font-semibold">
+        <label
+          htmlFor="description"
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 400,
+            fontStyle: "normal",
+          }}
+        >
           Description
         </label>
         <input
           type="text"
           id="description"
-          className="border-2 h-12 border-gray-300 w-[90%] rounded text-xl pl-2"
+          className="border-2 h-12 border-gray-300  rounded text-xl pl-2"
+          placeholder="Delicous food and crispy chips"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
         <div className="mt-3">
-          <label htmlFor="ProductImage" className="font-semibold">
-            ProductImage
+          <label
+            htmlFor="ProductImage"
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 400,
+              fontStyle: "normal",
+            }}
+          >
+            ProductImage :
           </label>
-          <input type="file" onChange={handleImageUpload} />
+          <input type="file" className="ml-2" onChange={handleImageUpload} />
         </div>
 
-        <div className="text-center mt-2">
+        <div className="text-center mt-6">
           <button
-           
             type="submit"
-            className="bg-black p-2 px-3 rounded text-white"
+            className="bg-green-500 p-2 px-3 rounded text-white"
+            style={poppins}
           >
-            Submit
+            save Product
           </button>
         </div>
       </form>
