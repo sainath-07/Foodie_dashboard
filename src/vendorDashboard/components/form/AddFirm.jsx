@@ -36,9 +36,16 @@ const AddFirm = () => {
 
     try {
       const getToken = localStorage.getItem("loginToken");
-      if (!getToken) {
-        console.log("Token not found");
-      }
+      
+      if(firmName==false || firmName=="" ||
+         area=="" || area==false ||
+         offer=="" || offer==false ||
+         category==[] || category=="" || 
+         region==[] || region=="" || 
+         Image==null || Image==false
+        ){
+          return alert('Please fill all required fields')
+        }
 
       const formData = new FormData();
       formData.append("firmName", firmName);
@@ -80,8 +87,6 @@ const AddFirm = () => {
         setcategory([]);
         setregion([]);
         setimage(null);
-      } else {
-        alert("something wentWrong , could not add firm try again...");
       }
     } catch (error) {
       console.error(error, "failed to add firm");

@@ -38,7 +38,7 @@ const VendorLogin = ({ handleAddFirm,handleAddProducts }) => {
         window.location.reload();
 
       } else if(data.error) {
-        alert(data.error);
+        alert(`${data.error}`);
       }
     } catch (error) {
       console.log(error, "error message");

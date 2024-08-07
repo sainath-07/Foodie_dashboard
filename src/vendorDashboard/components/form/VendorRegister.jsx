@@ -5,16 +5,20 @@ const VendorRegister = ({ handleVendorLogin }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errormessage, seterrormessage] = useState(false);
-  const [emptyfields, setemptyfields] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
-      if(username==""|| username==false || email=="" || email==false || password=="" || password==false){
-         alert('Please fill all the fields to register successfully')
-         return
+      if (
+        username == "" ||
+        username == false ||
+        email == "" ||
+        email == false ||
+        password == "" ||
+        password == false
+      ) {
+        alert("Please fill all the fields to register successfully");
+        return;
       }
       const response = await fetch(`${Api_url}/vendor/register`, {
         method: "POST",
@@ -32,17 +36,9 @@ const VendorRegister = ({ handleVendorLogin }) => {
         setUsername("");
         setEmail("");
         setPassword("");
-        seterrormessage(false);
-        setemptyfields(false);
         handleVendorLogin();
-      } else if (
-        username.length === 0 ||
-        email.length === 0 ||
-        password.length === 0
-      ) {
-        setemptyfields(true);
-      } else {
-        seterrormessage(true);
+      } else if (data.message) {
+        alert(data.message);
       }
     } catch (error) {
       console.error(error, "registration failed");
@@ -103,7 +99,7 @@ const VendorRegister = ({ handleVendorLogin }) => {
             fontStyle: "normal",
           }}
         >
-          Email  <span className="text-red-600">*</span>
+          Email <span className="text-red-600">*</span>
         </label>
         <input
           type="text"
@@ -120,11 +116,7 @@ const VendorRegister = ({ handleVendorLogin }) => {
           }}
           autoComplete="off"
         />
-        {errormessage && (
-          <p className="text-red-600 font-semibold">
-            An account already exists with this email address in the database{" "}
-          </p>
-        )}
+
         <br />
         <label
           htmlFor="password"
@@ -134,8 +126,8 @@ const VendorRegister = ({ handleVendorLogin }) => {
             fontWeight: 500,
             fontStyle: "normal",
           }}
-        > 
-          Password  <span className="text-red-600">*</span>
+        >
+          Password <span className="text-red-600">*</span>
         </label>
         <input
           type="password"
@@ -152,11 +144,6 @@ const VendorRegister = ({ handleVendorLogin }) => {
           }}
           autoComplete="off"
         />
-        {emptyfields && (
-          <p className="text-red-600 font-semibold">
-            Fields must not be emptyfields
-          </p>
-        )}
 
         <button
           type="submit"
