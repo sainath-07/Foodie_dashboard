@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Api_url } from "../utils/handleApis";
+import toast from "react-hot-toast";
+import { SyncLoader } from "react-spinners";
+import clsx from "clsx";
+import { data } from "../../App";
+
 
 const AllProducts = () => {
   const [products, setproducts] = useState([]);
+  const {  isSidemenuopen,
+    setsidemenu,}=useContext(data)
 
   useEffect(() => {
     fetchApi(setproducts);
@@ -19,7 +26,7 @@ const AllProducts = () => {
       // console.log(response, "response ok");
       setproducts(responseData.products);
     } catch (error) {
-      alert("failed to fetch products ");
+      toast.error("failed to fetch products ");
       console.log(error, "error form All product component");
     }
   };
@@ -38,13 +45,13 @@ const AllProducts = () => {
 
       if (response.ok) {
         fetchApi(setproducts);
-        alert("Product deleted successfully");
+        toast.success("Product deleted successfully");
       } else {
-        alert("product is not deleted successfully");
+        toast.error("product is not deleted successfully");
       }
     } catch (error) {
       console.log(error.message, "error message handleDeleteButton");
-      alert("Something went wrong: " + error.message);
+      toast.error("Something went wrong: " + error.message);
     }
   };
 
@@ -54,27 +61,38 @@ const AllProducts = () => {
     fontStyle: "normal",
   };
 
+  let filterstyling = {
+    borderRadius: "15px",
+    fontFamily: "Poppins, sans-serif",
+    fontWeight: 500,
+    color: "gray",
+    fontStyle: "normal",
+    padding: "5px 8px",
+    border: "1px solid rgba(2, 6, 12, 0.15)",
+    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+  };
+
   return (
     <>
-      <div>
+      <div className="overflow-auto md:w-full px-2 flex md:justify-center mx-auto mt-24">
         {Array.isArray(products) && products.length > 0 ? (
           <>
-            <table className="border-r-2 border-l-2 border-b-2 border-collapse border-slate-600 w-[70vw] mt-8 ml-24">
+            <table className="border-r-2 border-l-2 border-b-2 border-collapse border-slate-600  mt-8">
               <thead>
-                <tr className="bg-black text-white text-xl">
-                  <th style={Poppins} className="p-3">
+                <tr className="bg-black text-white text-sm">
+                  <th style={Poppins} className="p-3 md:text-lg">
                     Product Id
                   </th>
-                  <th style={Poppins} className="p-3">
+                  <th style={Poppins} className="p-2 md:text-lg lg:text-xl">
                     Product Name
                   </th>
-                  <th style={Poppins} className="p-3">
+                  <th style={Poppins} className="p-3 md:text-lg lg:text-xl">
                     Price
                   </th>
-                  <th style={Poppins} className="p-3">
+                  <th style={Poppins} className="p-3 md:text-lg lg:text-xl">
                     Image
                   </th>
-                  <th style={Poppins} className="p-3">
+                  <th style={Poppins} className="p-3 md:text-lg lg:text-xl">
                     Delete_Product
                   </th>
                 </tr>
@@ -94,27 +112,27 @@ const AllProducts = () => {
                     <React.Fragment key={index}>
                       <tr className="w-28">
                         <td
-                          className="border-2 font-semibold border-slate-600 text-center text-base"
+                          className="border-2 font-semibold border-slate-600 text-center text-base md:text-lg md:px-2 lg:text-xl "
                           style={{
                             fontFamily: "Poppins, sans-serif",
-                            fontWeight: 600,
+                            fontWeight: 400,
                             fontStyle: "normal",
                           }}
                         >
                           {_id}
                         </td>
                         <td
-                          className="border-2 font-bold text-xl text-orange-500 border-slate-600 text-center"
+                          className="border-2 md:text-lg md:px-2 lg:text-xl  font-bold text-lg text-orange-500 border-slate-600 text-center"
                           style={{
                             fontFamily: "Poppins, sans-serif",
-                            fontWeight: 600,
+                            fontWeight: 400,
                             fontStyle: "normal",
                           }}
                         >
                           {productName}
                         </td>
                         <td
-                          className="border-2 font-semibold border-slate-600 text-center text-xl"
+                          className="border-2 md:text-lg md:px-2 lg:text-xl  font-semibold border-slate-600 text-center text-xl"
                           style={{
                             fontFamily: "Poppins, sans-serif",
                             fontWeight: 500,
@@ -123,25 +141,21 @@ const AllProducts = () => {
                         >
                           &#8377;{price}
                         </td>
-                        <td className=" flex justify-center p-4">
+                        <td className=" flex  md:text-lg md:px-2 lg:text-xl  w-32 justify-center">
                           {image && (
                             <img
                               src={`${Api_url}/uploads/${image}`}
                               alt={productName}
-                              className="w-32"
+                              className="w-full object-cover"
                             />
                           )}
                         </td>
-                        <td className="border-2 border-slate-600 text-center">
+                        <td className="border-2 md:text-lg md:px-2 lg:text-xl  border-slate-600 text-center">
                           <button
                             type="button"
                             onClick={() => handleDeleteButton(_id, setproducts)}
-                            className=" p-2 rounded m-2 text-xl bg-red-500 text-white border-gray-300"
-                            style={{
-                              fontFamily: "Poppins, sans-serif",
-                              fontWeight: 400,
-                              fontStyle: "normal",
-                            }}
+                            className=""
+                            style={filterstyling}
                           >
                             Delete
                           </button>
@@ -154,11 +168,20 @@ const AllProducts = () => {
             </table>
           </>
         ) : (
-          <div className="w-[80vw] h-[80vh] flex justify-center items-center text-2xl" style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}>
+          <div
+
+          className={clsx("w-[80vw] h-[80vh] flex justify-center flex-col items-center text-2xl",
+            isSidemenuopen && 'relative -z-10'
+          )
+
+          }
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 500,
+              fontStyle: "normal",
+            }}
+          >
+            <SyncLoader color="#3ad717" />
             <p>No products,Please click on Add products </p>
           </div>
         )}

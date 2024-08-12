@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { Api_url } from "../../utils/handleApis";
+import toast from "react-hot-toast";
 
-const VendorLogin = ({ handleAddFirm,handleAddProducts }) => {
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+const VendorLogin = ({ handleAddFirm, handleAddProducts }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      if (
-        email == "" ||
-        email == false ||
-        password == false ||
-        password == ""
-      ) {
-        alert("Please fill all fields to login successfully");
+      if (!email || !password) {
+        toast('Please fill all fields to login successfully',
+          {
+            icon: '🙎🏼',
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+            },
+          }
+        );
+        
         return;
       }
 
@@ -25,97 +31,73 @@ const VendorLogin = ({ handleAddFirm,handleAddProducts }) => {
       });
 
       const data = await response.json();
-      console.log(data, "data");
       if (response.ok) {
         localStorage.setItem("firmId", data.vendor.firm);
-        // console.log(data, "data");
         localStorage.setItem("vendorId", data.vendor._id);
         localStorage.setItem("loginToken", data.token);
-        alert("login is successfull");
-        setemail("");
-        setpassword("");
-     
+        toast.success('Login successfull!')
+        setEmail("");
+        setPassword("");
         window.location.reload();
-
-      } else if(data.error) {
-        alert(`${data.error}`);
+      } else if (data.error) {
+        toast(data.error);
       }
     } catch (error) {
-      console.log(error, "error message");
+      console.error("Error:", error);
     }
   };
 
-  let Poppins = {
+  let poppins = {
     fontFamily: "Poppins, sans-serif",
-    fontWeight: 300,
+    fontWeight: 500,
     fontStyle: "normal",
   };
+
   return (
-    <div
-      className="rounded  w-[500px]  mx-auto h-[350px] mt-[65px] border-2 border-gray-300"
-      style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
-    >
-      <form
-        className="flex justify-center items-center flex-col h-full gap-4"
-        onSubmit={handleLogin}
-      >
-        <h2 className="text-2xl" style={Poppins}>
+    <div className="flex items-center justify-center w-full bg-gray-100 p-4 mt-24">
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full sm:max-w-md  md:max-w-md lg:max-w-lg">
+        <h2  style={poppins} className="text-2xl  font-bold mb-6 text-center text-gray-800">
           Vendor Login
         </h2>
-        <label
-          htmlFor="email"
-          className="w-[350px] text-xl"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}
-        >
-          Email <span className="text-red-600">*</span>
-        </label>
-        <input
-          type="text"
-          id="email"
-          className=" border-2 border-gray-300  w-[70%] rounded text-xl p-2 pl-3"
-          value={email}
-          name="email"
-          placeholder="Enter you email"
-          onChange={(e) => setemail(e.target.value)}
-          style={Poppins}
-        />
-        <label
-          htmlFor="password"
-          className="w-[350px] text-xl"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}
-        >
-          Password <span className="text-red-600">*</span>
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setpassword(e.target.value)}
-          className=" border-2 border-gray-300  w-[70%] rounded text-xl p-2 pl-3"
-          name="password"
-          placeholder="Enter you password"
-          style={Poppins}
-        />
-        <button
-          type="submit"
-          className="bg-green-500 text-white text-base  p-2 px-4 rounded"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
-        >
-          Login
-        </button>
-      </form>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label  style={poppins} htmlFor="email" className="block text-sm md:text-base font-medium text-gray-700 mb-1">
+              Email <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="w-full text-sm p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              autoComplete="off"
+              style={poppins}
+              />
+          </div>
+          <div>
+            <label  style={poppins} htmlFor="password" className="block text-sm md:text-base font-medium text-gray-700 mb-1">
+              Password <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="password"
+              autoComplete="off"
+              id="password"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              style={poppins}
+            />
+          </div>
+          <button
+            type="submit"  style={poppins}
+            className="w-full py-3 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

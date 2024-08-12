@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Api_url } from "../../utils/handleApis";
+import toast from "react-hot-toast";
 
 const AddProducts = () => {
-  const [productName, setproductName] = useState("");
+  const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState([]);
   const [bestSeller, setBestSeller] = useState(false);
-  const [Image, setImage] = useState("");
+  const [Image, setImage] = useState(null);
   const [description, setDescription] = useState("");
 
   const handleCategoryChange = (event) => {
@@ -34,9 +35,25 @@ const AddProducts = () => {
       const firmId = localStorage.getItem("firmId");
       const loginToken = localStorage.getItem("loginToken");
 
-      if (!firmId || !loginToken) {
-        alert("User is not authenticated");
-        return
+      if (
+        !firmId ||
+        !loginToken ||
+        !productName ||
+        !price ||
+        !category ||
+        !bestSeller ||
+        !Image ||
+        !description
+      ) {
+        toast("Please fill all the fields to register successfully", {
+          icon: "🙎🏼",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+        return;
       }
 
       const formData = new FormData();
@@ -51,205 +68,145 @@ const AddProducts = () => {
 
       const response = await fetch(`${Api_url}/product/add-product/${firmId}`, {
         method: "POST",
+        headers: {
+          token: `${loginToken}`,
+        },
         body: formData,
       });
 
       const data = await response.json();
       if (response.ok) {
-        alert("Product added successfully");
-        setproductName("");
+        toast.success("Product added successfully");
+        setProductName("");
         setPrice("");
         setCategory([]);
         setBestSeller(false);
-        setImage("");
+        setImage(null);
         setDescription("");
       }
     } catch (error) {
-      console.log(error.message);
-      alert("failed to add product");
+      console.error("Failed to add product:", error);
+      toast.error("Failed to add product. Try again");
     }
   };
 
-  let poppins = {
-    fontFamily: "Poppins, sans-serif",
-    fontWeight: 500,
-    fontStyle: "normal",
-  };
   return (
-    <div
-      className="mt-4 mx-auto w-[600px] flex justify-center px-8 h-[600px] border-2 border-gray-300 rounded"
-      style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
-    >
-      <form className="flex flex-col gap-2" onSubmit={handleAddProducts}>
-        <h2 className="text-2xl font-bold text-center mt-2" style={poppins}>
-          Add Product
-        </h2>
+    <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-lg bg-white  w-[95%] mt-24 rounded-lg shadow-lg">
+      <form className="flex flex-col gap-4 p-4" onSubmit={handleAddProducts}>
+        <h2 className="text-2xl font-bold text-center">Add Product</h2>
 
-        <label
-          htmlFor="productName"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
-        >
-          ProductName
+        <label htmlFor="productName" className="font-semibold text-lg">
+          Product Name
         </label>
         <input
           type="text"
-          value={productName}
-          onChange={(e) => setproductName(e.target.value)}
-          className="border-2 border-gray-300  rounded text-lg pl-2 p-2 "
-          autoComplete="off"
           id="productName"
-          name="productName"
-          placeholder="ProductName"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
+          className="border-2 border-gray-300 rounded-lg text-lg p-2 w-full"
+          placeholder="Product Name"
         />
 
-        <label
-          htmlFor="price"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
-        >
+        <label htmlFor="price" className="font-semibold text-lg">
           Price
         </label>
         <input
           type="number"
           id="price"
           value={price}
-          className="border-2 border-gray-300 w-[70%] rounded text-lg pl-2 p-2 "
-          autoComplete="off"
           onChange={(e) => setPrice(e.target.value)}
-          name="price"
+          className="border-2 border-gray-300 rounded-lg text-lg p-2 w-full"
           placeholder="Enter price"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
         />
 
-        <label
-          htmlFor="category"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
-        >
+        <label htmlFor="category" className="font-semibold text-lg">
           Category
         </label>
-        <div className="flex gap-2 justify-center items-center">
-          <div>
-            <label htmlFor="veg">Veg</label>
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center">
             <input
               type="checkbox"
               id="veg"
-              checked={category.includes("veg")}
               value="veg"
+              checked={category.includes("veg")}
               onChange={handleCategoryChange}
-              className="h-[25px] w-[25px] m-2"
+              className="mr-2"
             />
+            <label htmlFor="veg">Veg</label>
           </div>
-          <div>
-            <label htmlFor="Non-veg">Non-veg</label>
+          <div className="flex items-center">
             <input
               type="checkbox"
               id="Non-veg"
-              checked={category.includes("Non-veg")}
               value="Non-veg"
+              checked={category.includes("Non-veg")}
               onChange={handleCategoryChange}
-              className="h-[25px] w-[25px] m-2"
+              className="mr-2"
             />
+            <label htmlFor="Non-veg">Non-veg</label>
           </div>
         </div>
 
-        <label
-          htmlFor="bestSeller"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
-        >
-          BestSeller
+        <label htmlFor="bestSeller" className="font-semibold text-lg">
+          Best Seller
         </label>
-
-        <div className="flex justify-center items-center ">
-          <div>
-            <label htmlFor="yes">Yes</label>
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center">
             <input
               type="radio"
               id="yes"
-              name="BestSeller"
+              name="bestSeller"
               value="true"
               checked={bestSeller === true}
               onChange={handleBestSeller}
-              className="h-[25px] w-[25px] m-2"
+              className="mr-2"
             />
+            <label htmlFor="yes">Yes</label>
           </div>
-          <div>
-            <label htmlFor="no">No</label>
+          <div className="flex items-center">
             <input
               type="radio"
               id="no"
-              name="BestSeller"
+              name="bestSeller"
               value="false"
               checked={bestSeller === false}
               onChange={handleBestSeller}
-              className="h-[25px] w-[25px] m-2"
+              className="mr-2"
             />
+            <label htmlFor="no">No</label>
           </div>
         </div>
 
-        <label
-          htmlFor="description"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 400,
-            fontStyle: "normal",
-          }}
-        >
+        <label htmlFor="description" className="font-semibold text-lg">
           Description
         </label>
         <input
           type="text"
           id="description"
-          className="border-2 h-12 border-gray-300  rounded text-xl pl-2"
-          placeholder="Delicous food and crispy chips"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          className="border-2 border-gray-300 rounded-lg text-lg p-2 w-full"
+          placeholder="Delicious food and crispy chips"
         />
 
-        <div className="mt-3">
-          <label
-            htmlFor="ProductImage"
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 400,
-              fontStyle: "normal",
-            }}
-          >
-            ProductImage :
+        <div className="mt-4">
+          <label htmlFor="image" className="font-semibold text-lg">
+            Product Image
           </label>
-          <input type="file" className="ml-2" onChange={handleImageUpload} />
+          <input
+            type="file"
+            id="image"
+            onChange={handleImageUpload}
+            className="w-full mt-2"
+          />
         </div>
 
         <div className="text-center mt-6">
           <button
             type="submit"
-            className="bg-green-500 p-2 px-3 rounded text-white"
-            style={poppins}
+            className="bg-green-500 text-white p-2 px-4 rounded-lg hover:bg-green-600"
           >
-            save Product
+            Save Product
           </button>
         </div>
       </form>

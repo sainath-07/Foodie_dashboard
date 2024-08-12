@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Api_url } from "../../utils/handleApis";
+import toast from "react-hot-toast";
 
 const VendorRegister = ({ handleVendorLogin }) => {
   const [username, setUsername] = useState("");
@@ -9,15 +10,18 @@ const VendorRegister = ({ handleVendorLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (
-        username == "" ||
-        username == false ||
-        email == "" ||
-        email == false ||
-        password == "" ||
-        password == false
-      ) {
-        alert("Please fill all the fields to register successfully");
+      if (!username || !email || !password) {
+        toast('Please fill all the fields to register successfully',
+          {
+            icon: '🙎🏼',
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+            },
+          }
+        );
+        
         return;
       }
       const response = await fetch(`${Api_url}/vendor/register`, {
@@ -27,136 +31,97 @@ const VendorRegister = ({ handleVendorLogin }) => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-      // localStorage.setItem("username", username);
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
-        alert("registered successfully ");
+        toast.success("Registered successfully")
         setUsername("");
         setEmail("");
         setPassword("");
         handleVendorLogin();
       } else if (data.message) {
-        alert(data.message);
+        toast(data.message);
       }
     } catch (error) {
-      console.error(error, "registration failed");
+      console.error("Registration failed:", error);
     }
   };
 
-  let Poppins = {
+  let poppins = {
     fontFamily: "Poppins, sans-serif",
-    fontWeight: 300,
+    fontWeight: 500,
     fontStyle: "normal",
   };
 
   return (
-    <div
-      className=" rounded w-[50%] ml-52 h-[500px] mt-16 border-2 border-gray-300 "
-      style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
-    >
-      <form
-        className=" flex h-full flex-col items-center w-full justify-center mt-2"
-        onSubmit={handleSubmit}
-      >
-        <h3 className="mb-3 text-2xl font-semibold" style={Poppins}>
+    <div className="flex items-center justify-center p-4 w-full bg-gray-100 mt-24">
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-lg sm:max-w-sm lg:max-w-lg ">
+        <h3 style={poppins} className="text-2xl font-semibold mb-6 text-center text-gray-800">
           Vendor Register
         </h3>
-        <label
-          htmlFor="Username"
-          className="w-[340px] font-semibold  text-lg "
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}
-        >
-          Username <span className="text-red-600">*</span>
-        </label>
-        <input
-          type="text"
-          size={35}
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter you Username"
-          className="ml-2 text-lg pl-2 p-2 border-2 border-gray-300 rounded"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 300,
-            fontStyle: "normal",
-          }}
-          autoComplete="off"
-        />
-        <br />
-        <label
-          htmlFor="Username"
-          className="w-[340px] font-semibold text-lg"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}
-        >
-          Email <span className="text-red-600">*</span>
-        </label>
-        <input
-          type="text"
-          size={35}
-          name="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter you email"
-          className="ml-2 text-lg pl-2 p-2 border-2 border-gray-300 rounded"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 300,
-            fontStyle: "normal",
-          }}
-          autoComplete="off"
-        />
-
-        <br />
-        <label
-          htmlFor="password"
-          className=" w-[340px]  font-semibold text-lg"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}
-        >
-          Password <span className="text-red-600">*</span>
-        </label>
-        <input
-          type="password"
-          size={35}
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter you password"
-          className="ml-2 text-lg pl-2 p-2 border-2 border-gray-300 rounded"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 300,
-            fontStyle: "normal",
-          }}
-          autoComplete="off"
-        />
-
-        <button
-          type="submit"
-          className="bg-green-500 text-white m-6 px-3 py-2 rounded"
-          style={{
-            fontFamily: "Poppins, sans-serif",
-            fontWeight: 500,
-            fontStyle: "normal",
-          }}
-        >
-          Register
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="username" style={poppins}
+              className="block text-sm md:text-base font-medium text-gray-700 mb-1"
+            >
+              Username <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username} style={poppins}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              autoComplete="off"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="email" style={poppins}
+              className="block text-sm md:text-base font-medium text-gray-700 mb-1"
+            >
+              Email <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email} style={poppins}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              autoComplete="off"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="password" style={poppins}
+              className="block text-sm md:text-base font-medium text-gray-700 mb-1"
+            >
+              Password <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password" style={poppins}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              autoComplete="off"
+            />
+          </div>
+          <button
+            type="submit" style={poppins}
+            className="w-full py-3 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+          >
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
