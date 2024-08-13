@@ -281,11 +281,12 @@ const Navigationpage = () => {
                 className="text-lg text-center w-full flex flex-col gap-4 mt-20"
                 style={Poppins}
               >
-                <p>Welcome to vendor Dashboard</p>
+                <p className="md:text-xl lg:text-2xl">
+                  Welcome to Foodie Dashboard
+                </p>
                 <img
                   // src={foodimage}
                   src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  
                   className="w-[90vw] md:w-[70vw] lg:w-[50vw] rounded mx-auto"
                   alt=""
                 />
@@ -298,18 +299,26 @@ const Navigationpage = () => {
                   <p className="font-bold text-xl">### Getting Started</p>
                   <li>
                     {" "}
-                    <span className="font-bold">**Register**:</span> Create an account with your basic details
-                    and secure login credentials.
+                    <span className="font-bold">**Register**:</span> Create an
+                    account with your basic details and secure login
+                    credentials.
                   </li>
                   <li>
                     {" "}
-                   <span className="font-bold"> **Add Your Restaurant**:</span> Enter your restaurant
-                    information, upload images, and set your location. Note :
-                    Each user can add only one firm (resturant){" "}
+                    <span className="font-bold">
+                      {" "}
+                      **Add Your Restaurant**:
+                    </span>{" "}
+                    Enter your restaurant information, upload images, and set
+                    your location.
+                    <span className="text-red-500">
+                      Note : Each user can add only one firm (resturant)
+                    </span>
                   </li>
                   <li>
-                   <span className="font-bold"> **Add Products**:</span> List your menu items, categorize them,
-                    set prices, and upload product images.
+                    <span className="font-bold"> **Add Products**:</span> List
+                    your menu items, categorize them, set prices, and upload
+                    product images.
                   </li>
                   <button
                     className=" bg-red-500 text-white"

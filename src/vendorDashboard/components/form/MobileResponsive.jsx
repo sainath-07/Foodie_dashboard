@@ -61,9 +61,13 @@ const MobileResponsive = ({
         >
           {/* responsive top bar header */}
           <section className="flex mt-1 gap-2 border-b-2 py-2 px-4 justify-between items-end ">
-            <p style={poppins} className="text-xl cursor-pointer" onClick={()=>{
-              window.location.reload()
-            }}>
+            <p
+              style={poppins}
+              className="text-xl cursor-pointer"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
               Foodie Dashboard
             </p>
             <X
@@ -86,14 +90,14 @@ const MobileResponsive = ({
             >
               <ChefHat /> Add Firm
             </p>
-            <a
+            <p
               className="mb-4 flex justify-center gap-1 cursor-pointer text-center"
               style={filterstyling}
               onClick={handleAddProducts}
             >
               <HandPlatter />
               Add Product
-            </a>
+            </p>
             <p
               className="mb-4 cursor-pointer text-center flex justify-center gap-1 items-center"
               style={filterstyling}
@@ -102,7 +106,7 @@ const MobileResponsive = ({
               <ShoppingBag /> All Products
             </p>
 
-            <a
+            <p
               className="mb-4  border-2  flex justify-center gap-1 items-center cursor-pointer text-center"
               style={filterstyling}
               onClick={handleUserDetails}
@@ -111,7 +115,7 @@ const MobileResponsive = ({
             >
               <UserCheck />
               Userdetails
-            </a>
+            </p>
             <a
               className="mb-4  border-2  flex justify-center gap-1 items-center cursor-pointer text-center"
               style={filterstyling}
@@ -123,6 +127,16 @@ const MobileResponsive = ({
               <MessageCircleCode />
               24*7 Support
             </a>
+            <p
+              className="mb-4  border-2  flex justify-center gap-2 items-center cursor-pointer text-center"
+              style={filterstyling}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              <House />
+              Home
+            </p>
           </section>
         </div>
       </section>
