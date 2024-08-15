@@ -47,7 +47,7 @@ const MobileResponsive = ({
       <section
         className={clsx(
           "fixed top-0 left-0 h-screen w-[100vw]  -translate-x-full transition-all p-0 m-0",
-          isSidemenuopen && "translate-x-0 duration-700 ease-in-out"
+          isSidemenuopen && "translate-x-0 duration-700 ease-in"
         )}
       >
         <div
@@ -119,13 +119,20 @@ const MobileResponsive = ({
             <a
               className="mb-4  border-2  flex justify-center gap-1 items-center cursor-pointer text-center"
               style={filterstyling}
-              onClick={handleUserDetails}
               data-action="share/whatsapp/share"
               target="_blank"
               href="https://wa.me/+919010995323/?text=Hello"
             >
               <MessageCircleCode />
               24*7 Support
+            </a>
+            <a
+              className="mb-4  border-2  flex justify-center gap-1 items-center cursor-pointer text-center"
+              style={filterstyling}
+              href="tel:+919010995323"
+            >
+              <Phone />
+              Contact
             </a>
             <p
               className="mb-4  border-2  flex justify-center gap-2 items-center cursor-pointer text-center"

@@ -140,7 +140,6 @@ const reducerfun = (state, action) => {
   }
 };
 
-const docFile = "/doc.pdf"; // relative path for assets in the public folder
 
 const Navigationpage = () => {
   const [currentstate, dispatchfun] = useReducer(reducerfun, initialvalue);
@@ -217,14 +216,7 @@ const Navigationpage = () => {
     boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
   };
 
-  const handleDownload = (url) => {
-    const anchorTag = document.createElement("a");
-    anchorTag.href = url;
-    anchorTag.download = "FoodieDashboard.pdf"; // Provide a filename for the download
-    document.body.appendChild(anchorTag);
-    anchorTag.click();
-    document.body.removeChild(anchorTag);
-  };
+  
 
   let Poppins = {
     fontFamily: "Poppins, sans-serif",
@@ -320,14 +312,7 @@ const Navigationpage = () => {
                     your menu items, categorize them, set prices, and upload
                     product images.
                   </li>
-                  <button
-                    className=" bg-red-500 text-white"
-                    style={filterstyling}
-                    //  style={{borderRadius:'25px',}}
-                    onClick={() => handleDownload(docFile)}
-                  >
-                    Download Pdf
-                  </button>
+                  
                 </ul>
               </div>
             </>
@@ -335,8 +320,7 @@ const Navigationpage = () => {
         </div>
       </div>
 
-      {/* <Navbar/>
-    <AddProducts/> */}
+     
     </>
   );
 };
