@@ -47,7 +47,7 @@ const MobileResponsive = ({
       <section
         className={clsx(
           "fixed top-0 left-0 h-screen w-[100vw]  -translate-x-full transition-all p-0 m-0",
-          isSidemenuopen && "translate-x-0 duration-700 ease-in"
+          isSidemenuopen && "translate-x-0 duration-700 ease-in-out"
         )}
       >
         <div
